@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
 
-ALLOWED_EXTENSIONS = set(['xls', 'csv', 'png', 'jpeg', 'jpg'])
+ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'UPLOADS'))
 app = Flask(__name__)
 app.config['UPLOADS'] = UPLOAD_FOLDER
@@ -36,3 +36,4 @@ def fileUpload():
         return jsonify({"name": filename, "status": "success"})
     else:
         return jsonify({"status": "Upload API GET Request Running"})
+    
