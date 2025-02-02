@@ -1,12 +1,11 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
 
 ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
-UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'UPLOADS'))
 app = Flask(__name__)
-app.config['UPLOADS'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = '/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS'
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1000 * 1000  # 500 MB
 app.config['CORS_HEADER'] = 'application/json'
 
@@ -14,26 +13,41 @@ def allowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
+'''Test endpoints'''
 @app.route('/')
 def home():
     return 'Hello, World!'
 
+@app.route('/test', methods=['GET'])
+def test():
+    return render_template('test.html')
+''''''
+
+'''Upload Endpoint'''
 @app.route('/upload', methods=['POST', 'GET'])
 def fileUpload():
     if request.method == 'POST':
-        file = request.files.getlist('files')
+        files = request.files.getlist('file')  # Ensure the key matches the form data
         filename = ""
-        print(request.files, "....")
-        for f in file:
-            print(f.filename)
+        for f in files:
             filename = secure_filename(f.filename)
-            print(allowedFile(filename))
             if allowedFile(filename):
-                f.save(os.path.join(app.config['UPLOADS'], filename))
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
                 return jsonify({'message': 'File type not allowed'}), 400
         return jsonify({"name": filename, "status": "success"})
     else:
         return jsonify({"status": "Upload API GET Request Running"})
-    
+
+'''Visualisation Endpoint: Average BPM every hour'''
+from utils import calculate_average_bpm_every_hour
+@app.route('/averageBPM', methods=['GET'])
+def get_average_data():
+    data = calculate_average_bpm_every_hour()
+    return jsonify(data)
+
+@app.route('/visualise', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+
