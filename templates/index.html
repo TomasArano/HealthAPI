@@ -4,11 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualization</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Average Heartrate (Average Hourly BPM)</h1>
-    <canvas id="chart" width="400" height="200"></canvas>
+    <div class="container">
+        <h1>Average Heartrate (Average Hourly BPM)</h1>
+        <!-- Nav tabs -->
+        <ul class="nav nav-pills nav-justified">
+            <li class="active"><a data-toggle="tab" href="#tab1">Chart 1</a></li>
+            <li><a data-toggle="tab" href="#tab2" id="bs-tab2">Chart 2</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content" style="margin-top:20px;">
+            <div id="tab1" class="tab-pane fade in active">
+                <canvas id="chart1" width="400" height="200"></canvas>
+            </div>
+            <div id="tab2" class="tab-pane fade">
+                <canvas id="chart2" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!--JS graphs file-->
     <script src="{{ url_for('static', filename='graphs.js') }}"></script>
 </body>
