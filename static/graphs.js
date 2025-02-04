@@ -12,7 +12,7 @@ fetch('/averageBPM')
                 datasets: [{
                     label: 'Average BPM',
                     data: bpmValues,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    backgroundColor: 'rgba(0, 200, 0, 0.8)'
                 }]
             },
             options: {
@@ -56,7 +56,7 @@ $('#bs-tab2').on("shown.bs.tab", function(){
               datasets: [{
                 label: 'BPM Range',
                 data: rangeData,
-                backgroundColor: 'rgba(192, 75, 192, 0.6)'
+                backgroundColor: 'rgba(255, 0, 0, 0.8)'
               }]
            },
            options: {
@@ -101,15 +101,18 @@ $('#bs-tab3').on("shown.bs.tab", function(){
         .then(data => {
             const activities = data.map(item => item.Activity);
             const totalTimes = data.map(item => item.totalTime);
-            // Updated saturated and dark colours palette with additional colours
+            // Updated palette in the specified order
             const palette = [
-                "rgba(200, 0, 0, 0.8)",    // dark red
-                "rgba(204, 153, 0, 0.8)",  // mustard yellow
-                "rgba(0, 128, 0, 0.8)",    // dark green
-                "rgba(0, 0, 139, 0.8)",    // dark blue
-                "rgba(128, 0, 128, 0.8)",  // dark purple
-                "rgba(192, 112, 208, 0.8)",// lilac
-                "rgba(64, 224, 208, 0.8)"  // turquoise blue
+                "rgba(200, 0, 0, 0.8)",     // dark red
+                "rgba(178, 134, 0, 0.8)",   // dark yellow
+                "rgba(0, 128, 0, 0.8)",     // dark green
+                "rgba(0, 0, 139, 0.8)",     // dark blue
+                "rgba(128, 0, 128, 0.8)",   // dark purple
+                "rgba(255, 221, 51, 0.8)",  // light yellow
+                "rgba(102, 205, 0, 0.8)",   // light green
+                "rgba(255, 182, 193, 0.8)", // pink
+                "rgba(64, 224, 208, 0.8)",  // turquoise blue
+                "rgba(192, 112, 208, 0.8)"  // lilac
             ];
             // Assign colours using modulo to loop through the palette
             const colors = activities.map((_, i) => palette[i % palette.length]);
