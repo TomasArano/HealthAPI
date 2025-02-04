@@ -2,6 +2,7 @@ import pandas as pd
 def calculate_average_bpm_every_hour():
     """
     Calculate the average heart rate (BPM) for each hour of the day.
+    
     Reads heartrate data from a CSV file and processes it to compute hourly averages.
     
     Returns:
@@ -16,10 +17,18 @@ def calculate_average_bpm_every_hour():
             ...
         ]
     """
+    # Read the CSV file containing heart rate data
     df = pd.read_csv('/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS/heartrate.csv')
+    
+    # Combine Date and Time columns into a datetime object
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
+    
+    # Extract hour component from datetime
     df['Hour'] = df['Datetime'].dt.hour
+    
+    # Calculate mean BPM for each hour and format results
     hourly_avg = df.groupby('Hour', as_index=False)['BPM'].mean().rename(columns={'BPM': 'averageBPM'})
+    
     return hourly_avg.to_dict(orient='records')
 
 def calculate_hourly_range():
@@ -44,11 +53,7 @@ def calculate_hourly_range():
     # Extract hour component from datetime
     df['Hour'] = df['Datetime'].dt.hour
     
-    # group minimum and maximum BPM for each hour
-    #hourly_min_max = df.groupby('Hour', as_index=False)['BPM'].agg(['min', 'max']).reset_index()
-    #3hourly_min_max = hourly_min_max.rename(columns={'min': 'minBPM', 'max': 'maxBPM'})
-    
-    # Aggregate min and max BPM for each hour, ensuring no unnecessary index column
+    # Aggregate min and max BPM for each hour 
     hourly_min_max = df.groupby('Hour')['BPM'].agg(minBPM='min', maxBPM='max').reset_index()
     
     
