@@ -3,6 +3,9 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
 
+from utils import calculate_average_bpm_every_hour, calculate_hourly_range
+
+
 ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = '/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS'
@@ -40,11 +43,16 @@ def fileUpload():
         return jsonify({"status": "Upload API GET Request Running"})
 
 '''Visualisation Endpoint: Average BPM every hour'''
-from utils import calculate_average_bpm_every_hour
 @app.route('/averageBPM', methods=['GET'])
-def get_average_data():
+def get_hourly_average_data():
     data = calculate_average_bpm_every_hour()
     return jsonify(data)
+
+@app.route('/rangeBPM', methods=['GET'])
+def get_hourly_range_data():
+    data = calculate_hourly_range()
+    return jsonify(data)
+
 
 @app.route('/visualise', methods=['GET'])
 def index():
