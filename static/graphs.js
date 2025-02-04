@@ -93,3 +93,54 @@ $('#bs-tab2').on("shown.bs.tab", function(){
     // Remove the event listener so that Chart 2 is rendered only once
     $('#bs-tab2').off("shown.bs.tab");
 });
+
+// Chart 3: Load time per activity data from /timeActivity endpoint when Tab 3 is shown
+$('#bs-tab3').on("shown.bs.tab", function(){
+    fetch('/timeActivity')
+        .then(response => response.json())
+        .then(data => {
+            const activities = data.map(item => item.Activity);
+            const totalTimes = data.map(item => item.totalTime);
+            // Updated saturated and dark colours palette with additional colours
+            const palette = [
+                "rgba(200, 0, 0, 0.8)",    // dark red
+                "rgba(204, 153, 0, 0.8)",  // mustard yellow
+                "rgba(0, 128, 0, 0.8)",    // dark green
+                "rgba(0, 0, 139, 0.8)",    // dark blue
+                "rgba(128, 0, 128, 0.8)",  // dark purple
+                "rgba(192, 112, 208, 0.8)",// lilac
+                "rgba(64, 224, 208, 0.8)"  // turquoise blue
+            ];
+            // Assign colours using modulo to loop through the palette
+            const colors = activities.map((_, i) => palette[i % palette.length]);
+            const ctx3 = document.getElementById('chart3').getContext('2d');
+            new Chart(ctx3, {
+                type: 'doughnut',
+                data: {
+                    labels: activities,
+                    datasets: [{
+                        label: 'Time per Activity (minutes)',
+                        data: totalTimes,
+                        backgroundColor: colors
+                    }]
+                },
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    return `${label}: ${value.toFixed(2)} minutes`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error (Chart 3):', error));
+    
+    // Remove the event listener so that Chart 3 is rendered only once
+    $('#bs-tab3').off("shown.bs.tab");
+});
