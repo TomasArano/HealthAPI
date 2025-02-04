@@ -60,4 +60,37 @@ def calculate_hourly_range():
     # Convert the result to a list of dictionaries
     return hourly_min_max.to_dict(orient='records')
 
+def calculate_time_per_activity():
+    """
+    Calculate the total time spent on each activity based on the CSV data.
+    
+    The function reads the CSV file, combines "Date" and "Time" into a datetime,
+    computes the duration (in minutes) between consecutive records, and aggregates
+    the total time per activity label.
+    
+    Returns:
+        list[dict]: A list where each dictionary has:
+            - 'Activity': The label of the activity.
+            - 'totalTime': Total time in minutes spent on that activity.
+    """
+    import pandas as pd
+    # Read the CSV file
+    df = pd.read_csv('/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS/heartrate.csv')
+    
+    # Combine Date and Time into datetime and sort
+    df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
+    df = df.sort_values('Datetime')
+    
+    # Compute duration (in minutes) to next record
+    df['NextTime'] = df['Datetime'].shift(-1)
+    df['duration'] = (df['NextTime'] - df['Datetime']).dt.total_seconds() / 60
+    # Fill the last NaN with the median duration (or 5 if preferred)
+    median_duration = df['duration'].median()
+    df['duration'] = df['duration'].fillna(median_duration)
+    
+    # Group by the activity label and sum durations
+    activity_duration = df.groupby('Label', as_index=False)['duration'].sum().rename(columns={'Label': 'Activity', 'duration': 'totalTime'})
+    
+    return activity_duration.to_dict(orient='records')
+
 

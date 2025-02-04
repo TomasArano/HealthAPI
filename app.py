@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import os
 
-from utils import calculate_average_bpm_every_hour, calculate_hourly_range
+from utils import calculate_average_bpm_every_hour, calculate_hourly_range, calculate_time_per_activity
 
 
 ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
@@ -53,6 +53,10 @@ def get_hourly_range_data():
     data = calculate_hourly_range()
     return jsonify(data)
 
+@app.route('/timeActivity', methods=['GET'])
+def get_time_per_activity():
+    data = calculate_time_per_activity()
+    return jsonify(data)
 
 @app.route('/visualise', methods=['GET'])
 def index():
