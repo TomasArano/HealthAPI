@@ -1,4 +1,6 @@
+import os
 import pandas as pd
+
 def calculate_average_bpm_every_hour():
     """
     Calculate the average heart rate (BPM) for each hour of the day.
@@ -18,7 +20,7 @@ def calculate_average_bpm_every_hour():
         ]
     """
     # Read the CSV file containing heart rate data
-    df = pd.read_csv('/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS/heartrate.csv')
+    df = pd.read_csv(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'UPLOADS', 'heartrate.csv'))
     
     # Combine Date and Time columns into a datetime object
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
@@ -45,7 +47,7 @@ def calculate_hourly_range():
             - 'maxBPM': float representing the maximum BPM in that hour
     """
     # Read CSV file
-    df = pd.read_csv('/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS/heartrate.csv')
+    df = pd.read_csv(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'UPLOADS', 'heartrate.csv'))
     
     # Combine Date and Time columns into a datetime object
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
@@ -75,7 +77,7 @@ def calculate_time_per_activity():
     """
     import pandas as pd
     # Read the CSV file
-    df = pd.read_csv('/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS/heartrate.csv')
+    df = pd.read_csv(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'UPLOADS', 'heartrate.csv'))
     
     # Combine Date and Time into datetime and sort
     df['Datetime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])

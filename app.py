@@ -8,7 +8,7 @@ from utils import calculate_average_bpm_every_hour, calculate_hourly_range, calc
 
 ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = '/Users/air/Desktop/BSC Projects/HealthAPI/UPLOADS'
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'UPLOADS')
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1000 * 1000  # 500 MB
 app.config['CORS_HEADER'] = 'application/json'
 
