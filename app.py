@@ -16,15 +16,6 @@ def allowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-'''Test endpoints'''
-@app.route('/')
-def home():
-    return 'Hello, World!'
-
-@app.route('/test', methods=['GET'])
-def test():
-    return render_template('test.html')
-''''''
 
 '''Upload Endpoint'''
 @app.route('/upload', methods=['POST', 'GET'])
