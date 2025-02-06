@@ -61,8 +61,4 @@ Date,Time,BPM,Label
 01/12/2025,00:00,58,Sleeping
 ```
 
-```
-Date,Time,BPM,Label
-01/12/2025,00:00,58,Sleeping
-```
 
