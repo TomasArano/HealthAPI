@@ -4,7 +4,7 @@ from flask_cors import CORS
 import os
 
 from utils import calculate_average_bpm_every_hour, calculate_hourly_range, calculate_time_per_activity
-
+from converter import convert_xml_to_csv
 
 ALLOWED_EXTENSIONS = set(['xls', 'csv', 'txt'])
 app = Flask(__name__)
@@ -53,4 +53,25 @@ def get_time_per_activity():
 def index():
     return render_template('index.html')
 
+'''Convert XML to CSV Endpoint'''
 
+@app.route('/convert', methods=['POST'])
+def convert_xml():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    
+    if file and file.filename.endswith('.xml'):
+        xml_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+        file.save(xml_path)
+        
+        try:
+            csv_path = convert_xml_to_csv(xml_path)
+            return jsonify({'success': True, 'csv_path': csv_path}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({'error': 'File must be XML format'}), 400
